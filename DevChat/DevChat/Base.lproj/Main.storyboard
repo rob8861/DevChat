@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="DDC-X1-kBf">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -210,6 +211,82 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8WR-bR-s8X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="906.39999999999998" y="36.431784107946029"/>
+        </scene>
+        <!--UsersVC-->
+        <scene sceneID="2d8-q5-abi">
+            <objects>
+                <viewController id="DDC-X1-kBf" customClass="UsersVC" customModule="DevChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QSp-7W-30w"/>
+                        <viewControllerLayoutGuide type="bottom" id="Jxt-Te-b2Y"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="P6D-Ff-cOA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WOP-fp-H0C">
+                                <rect key="frame" x="0.0" y="109" width="375" height="558"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserCell" id="HZd-3n-Hs3" customClass="UserCell" customModule="DevChat" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HZd-3n-Hs3" id="PLj-bM-x3l">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="John Doe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rCh-9O-md3">
+                                                    <rect key="frame" x="28" y="7" width="91.5" height="29"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="21"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="rCh-9O-md3" firstAttribute="leading" secondItem="PLj-bM-x3l" secondAttribute="leadingMargin" constant="20" id="eot-fw-77J"/>
+                                                <constraint firstItem="rCh-9O-md3" firstAttribute="centerY" secondItem="PLj-bM-x3l" secondAttribute="centerY" id="tqq-WD-Yxz"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="firstNameLbl" destination="rCh-9O-md3" id="kI5-Ja-Ttj"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJf-mm-ggV">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+                                <color key="backgroundColor" red="0.27450980390000002" green="0.59215686270000001" blue="0.01176470588" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="65" id="CGv-Ns-3Ow"/>
+                                </constraints>
+                            </view>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="V0Y-X5-Xi0">
+                                <rect key="frame" x="0.0" y="65" width="375" height="44"/>
+                                <color key="barTintColor" red="0.27450980390000002" green="0.59215686270000001" blue="0.01176470588" alpha="1" colorSpace="calibratedRGB"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WOP-fp-H0C" firstAttribute="top" secondItem="V0Y-X5-Xi0" secondAttribute="bottom" id="A0x-v1-kUZ"/>
+                            <constraint firstItem="sJf-mm-ggV" firstAttribute="leading" secondItem="P6D-Ff-cOA" secondAttribute="leading" id="J4T-a2-uby"/>
+                            <constraint firstItem="V0Y-X5-Xi0" firstAttribute="top" secondItem="sJf-mm-ggV" secondAttribute="bottom" id="Rzt-4y-gkt"/>
+                            <constraint firstItem="sJf-mm-ggV" firstAttribute="top" secondItem="P6D-Ff-cOA" secondAttribute="top" id="YKx-WJ-Haf"/>
+                            <constraint firstItem="Jxt-Te-b2Y" firstAttribute="top" secondItem="WOP-fp-H0C" secondAttribute="bottom" id="hQB-y9-dFQ"/>
+                            <constraint firstAttribute="trailing" secondItem="V0Y-X5-Xi0" secondAttribute="trailing" id="j9A-uW-tbY"/>
+                            <constraint firstItem="V0Y-X5-Xi0" firstAttribute="leading" secondItem="P6D-Ff-cOA" secondAttribute="leading" id="osm-Vp-q3w"/>
+                            <constraint firstAttribute="trailing" secondItem="WOP-fp-H0C" secondAttribute="trailing" id="pHj-g7-e9N"/>
+                            <constraint firstAttribute="trailing" secondItem="sJf-mm-ggV" secondAttribute="trailing" id="rfe-Dk-NgH"/>
+                            <constraint firstItem="WOP-fp-H0C" firstAttribute="leading" secondItem="P6D-Ff-cOA" secondAttribute="leading" id="y9n-f1-WXb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="WOP-fp-H0C" id="FqD-DD-TkS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="02q-xi-Nph" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1733.5999999999999" y="35.532233883058474"/>
         </scene>
     </scenes>
     <resources>
