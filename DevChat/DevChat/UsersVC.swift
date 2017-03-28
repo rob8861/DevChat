@@ -8,12 +8,34 @@
 
 import UIKit
 import FirebaseDatabase
+import FirebaseAuth
 
 class UsersVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var pullRequestBtn: UIButton!
+    
     
     var users = [User]()
+    var selectedUsers = Dictionary<String, User>()
+    
+    var snapData: Data {
+        set {
+            _snapData = newValue
+        }
+        get {
+            return _snapData!
+        }
+    }
+    
+    var videoURL: URL {
+        set {
+            _videoURL = newValue
+        }
+        get {
+            return _videoURL!
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +43,8 @@ class UsersVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.allowsMultipleSelection = true
+        
+        pullRequestBtn.isEnabled = false
         
         DataService.instance.usersRef.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -43,16 +67,28 @@ class UsersVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 }
             }
             self.tableView.reloadData()
-            print("users: \(self.users)")
         })
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        pullRequestBtn.isEnabled = true
+        let cell = tableView.cellForRow(at: indexPath) as! UserCell
+        cell.setCheckmark(selected: true)
+        let user = users[indexPath.row]
+        selectedUsers[user.uid] = user
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         
+        let cell = tableView.cellForRow(at: indexPath) as! UserCell
+        cell.setCheckmark(selected: false)
+        let user = users[indexPath.row]
+        selectedUsers[user.uid] = nil
+        
+        if selectedUsers.count <= 0 {
+            pullRequestBtn.isEnabled = false
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -65,7 +101,48 @@ class UsersVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as! UserCell
+        let user = users[indexPath.row]
+        cell.updateUI(user: user)
+        return cell
     }
-
+    
+    @IBAction func sendPRBtnPressed(_ sender: UIButton) {
+        
+        if let url = _videoURL {
+            
+            let videoName = "\(NSUUID().uuidString)\(url)"
+            let ref = DataService.instance.videoStorageRef.child(videoName)
+            
+            _ = ref.putFile(url, metadata: nil, completion: { (metadata, error) in
+                
+                if error != nil {
+                    print("Error uploading video: \(error?.localizedDescription)")
+                } else {
+                    let downloadURL  = metadata!.downloadURL()
+                    DataService.instance.sendMediaPullRequest(senderUID: FIRAuth.auth()!.currentUser!.uid, sendingTo: self.selectedUsers, mediaURL: downloadURL!, textSnipper: "Coding today was LEGIT")
+                    
+                }
+            })
+            self.dismiss(animated: true, completion: nil)
+        } else if let snap = _snapData {
+            
+            let ref = DataService.instance.imagesStorageRef.child("\(NSUUID().uuidString).jpg")
+            
+            _ = ref.put(snap, metadata: nil, completion: { (metadata, error) in
+                
+                if error != nil {
+                    print("Error uploading snapshot: \(error?.localizedDescription)")
+                } else {
+                    
+                    let downloadURL = metadata?.downloadURL()
+                    DataService.instance.sendMediaPullRequest(senderUID: FIRAuth.auth()!.currentUser!.uid, sendingTo: self.selectedUsers, mediaURL: downloadURL!)
+                }
+            })
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    private var _snapData: Data?
+    private var _videoURL: URL?
 }

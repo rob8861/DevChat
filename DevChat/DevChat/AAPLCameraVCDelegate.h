@@ -23,4 +23,4 @@
 
 @end
 
-#endif /* Header_h */
+#endif /* AAPLCameraVCDelegate_h */
